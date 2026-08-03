@@ -1,14 +1,18 @@
+using Microsoft.EntityFrameworkCore;
+using api.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-
+builder.Services.AddControllers(); // <--- Crucial if you are using a Controllers folder
 builder.Services.AddEndpointsApiExplorer();
-
 builder.Services.AddSwaggerGen();
 
-var app = builder.Build();
+builder.Services.AddDbContext<ApplicationDbContext>(options => {
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
 
+var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -19,6 +23,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.Run();
+app.UseAuthorization(); // <--- Good practice to keep below redirection
 
- 
+app.MapControllers();   // <--- Crucial! Maps your API endpoints to the router
+
+app.Run();
