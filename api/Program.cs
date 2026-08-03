@@ -7,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers(); // <--- Crucial if you are using a Controllers folder
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddControllers();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options => {
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
@@ -26,5 +27,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization(); // <--- Good practice to keep below redirection
 
 app.MapControllers();   // <--- Crucial! Maps your API endpoints to the router
+
+app.MapControllers();
 
 app.Run();
