@@ -28,6 +28,5 @@ app.UseAuthorization(); // <--- Good practice to keep below redirection
 
 app.MapControllers();   // <--- Crucial! Maps your API endpoints to the router
 
-app.MapControllers();
 
 app.Run();
